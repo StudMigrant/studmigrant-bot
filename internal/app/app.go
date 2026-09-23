@@ -15,6 +15,8 @@ import (
 	"github.com/max-messenger/max-bot-api-client-go/v2/model"
 )
 
+const addr = ":8080"
+
 type App struct {
 	cfg    config.Config
 	bot    *bot.Bot
@@ -36,7 +38,7 @@ func New(ctx context.Context, cfg config.Config, log *slog.Logger) (*App, error)
 	b := bot.New(maxAPI, svc, log)
 
 	server := &http.Server{
-		Addr:    cfg.Addr,
+		Addr:    addr,
 		Handler: handler.NewRouter(b.Webhook(cfg.WebhookSecret)),
 	}
 
@@ -46,7 +48,7 @@ func New(ctx context.Context, cfg config.Config, log *slog.Logger) (*App, error)
 func (a *App) Run(ctx context.Context) error {
 	errCh := make(chan error, 1)
 	go func() {
-		a.log.Info("server starting", "addr", a.cfg.Addr)
+		a.log.Info("server starting", "addr", addr)
 		if err := a.server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			errCh <- err
 		}

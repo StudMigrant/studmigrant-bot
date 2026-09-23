@@ -11,7 +11,6 @@ type Config struct {
 	Token         string
 	WebhookURL    string
 	WebhookSecret string
-	Addr          string
 }
 
 func NewConfig() (*Config, error) {
@@ -21,10 +20,6 @@ func NewConfig() (*Config, error) {
 		Token:         os.Getenv("TOKEN"),
 		WebhookURL:    os.Getenv("WEBHOOK_URL"),
 		WebhookSecret: os.Getenv("WEBHOOK_SECRET"),
-		Addr:          os.Getenv("ADDR"),
-	}
-	if cfg.Addr == "" {
-		cfg.Addr = ":8080"
 	}
 	if cfg.Token == "" || cfg.WebhookURL == "" || cfg.WebhookSecret == "" {
 		return nil, fmt.Errorf("MAX_BOT_TOKEN, WEBHOOK_URL, WEBHOOK_SECRET required")
